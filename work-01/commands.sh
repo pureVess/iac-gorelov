@@ -95,49 +95,5 @@ yc vpc network delete "$PREFIX-net"
 
 
 
-
-
-
-
-# Полезные команды
-
-yc init
-
-export VM_IP=$(yc compute instance get "$PREFIX-web-1" --format json \
-  | jq -r '.network_interfaces[0].primary_v4_address.one_to_one_nat.address')
-ssh yc-user@"$VM_IP"
-
-set +H #bash
-
-# Показывает базовую информацию: ID, имя, зону, статус и IP-адреса.
-yc compute instance list
-
-# Удобно, чтобы быстро глазами найти диски, метаданные или параметры сети.
-yc compute instance list --format yaml
-
-# В чистом виде читать тяжело, поэтому всегда используется в связке с 'jq'.
-yc compute instance list --format json
-
-# Выводит таблицу подсетей с их зонами (a, b, d) и CIDR-диапазонами (номерами IP).
-yc vpc subnet list
-
-# Помогает увидеть, к какому конкретно NETWORK ID привязана каждая подсеть.
-yc vpc subnet list --format yaml
-
-# только свои ресурсы
-yc compute instance list --format json | jq -r ".[] | select(.name | startswith(\"$PREFIX\")) | .name"
-
-# только имена и статусы остановленных
-yc compute instance list --format json | jq -r '.[] | select(.status != "RUNNING") | .name'
-
-# уборка по порядку
-yc compute instance delete "$PREFIX-web-1"
-yc compute instance delete "$PREFIX-web-manual"
-
-yc vpc subnet delete "$PREFIX-subnet"
-yc vpc network delete "$PREFIX-net"
-
-
-
   
   
