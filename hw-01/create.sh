@@ -17,7 +17,8 @@ if [ -n "${1:-}" ]; then
   if [ "$1" = "--web-count" ]; then
     VM_COUNT="$2"
   else
-    VM_COUNT="$1"
+    echo "неизвестный аргумент: $1"
+    exit 1
   fi
 fi
 
