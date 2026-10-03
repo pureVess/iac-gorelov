@@ -71,10 +71,6 @@ for i in $(seq 1 "$VM_COUNT"); do
   if yc compute instance get "$VM_NAME" >/dev/null 2>&1; then
     continue
   fi
-  
-  if yc compute instance get "$VM_NAME" >/dev/null 2>&1; then
-    continue
-  fi
 
   yc compute instance create \
     --name "$VM_NAME" \
