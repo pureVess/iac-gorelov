@@ -13,11 +13,11 @@ if ! yc compute instance get "$PREFIX-app-1" >/dev/null 2>&1 \
   exit 1
 fi
 
-if ! yc load-balancer network-load-balancer get --name "$PREFIX-lb" >/dev/null 2>&1; then
+if ! yc load-balancer network-load-balancer get "$PREFIX-lb" >/dev/null 2>&1; then
   echo "✗ балансировщик не найден"
   EXIT_STATUS=1
 else
-  LB_IP=$(yc load-balancer network-load-balancer get --name "$PREFIX-lb" \
+  LB_IP=$(yc load-balancer network-load-balancer get "$PREFIX-lb" \
     --format json | jq -r '.listeners[0].address')
 
   HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "http://$LB_IP")
@@ -45,6 +45,7 @@ else
     EXIT_STATUS=1
   fi
 fi
+
 
 if ! yc compute instance get "$PREFIX-app-1" >/dev/null 2>&1; then
   echo "✗ сервер приложения недоступен с веб-сервера"
